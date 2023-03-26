@@ -89,7 +89,7 @@ class ProductManager{
         this.getProducts()
         try {
             const eliminarProd = this.products.filter(prod => prod.id !== id)
-            if (!eliminarProd) return 'Id no encontrado'
+            if (JSON.stringify(eliminarProd) === JSON.stringify(this.products)) return 'Id no encontrado'
             this.products = eliminarProd
             await fs.writeFile(this.path,JSON.stringify(this.products,'null',2),'utf-8')
             return 'Producto eliminado'
@@ -110,10 +110,12 @@ const app = async() =>{
     console.log(await producto.getProducts())
     console.log(await producto.updateProduct(1, {title: 'producto modificado', description: 'Este es un producto prueba', price: 200, thumbnail: 'sin imagen', stock: 200, code: 'abc125'}))
     console.log(await producto.getProducts())
+    console.log(await producto.deleteProduct(4))
+    console.log(await producto.getProducts())
+    console.log(await producto.getProductById(4))
+    console.log(await producto.getProductById(3))
     console.log(await producto.deleteProduct(2))
     console.log(await producto.getProducts())
-    console.log(await producto.getProductById(2))
-    console.log(await producto.getProductById(3))
     
 }
 app()

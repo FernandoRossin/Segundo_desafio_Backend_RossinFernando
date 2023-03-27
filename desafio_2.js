@@ -10,7 +10,7 @@ class ProductManager{
         fs.writeFile(this.path,JSON.stringify(this.products,'null',2),'utf-8')
     }
     addProduct = async (title,description,price,thumbnail,code,stock) => {
-        this.getProducts()
+        await this.getProducts()
         try{
         const product = {
             title,
@@ -47,15 +47,15 @@ class ProductManager{
     getProducts = async () => {
         try{
             const data = await fs.readFile(this.path,'utf-8') 
-            this.product = JSON.parse(data)
-            return this.product
+            this.products = JSON.parse(data)
+            return this.products
         }
         catch (error){
             return error
         }
     }
     getProductById = async (id) => {
-        this.getProducts()
+        await this.getProducts()
         try{
         const prodID = this.products.find(p => p.id === id)
         if(prodID){
@@ -68,7 +68,7 @@ class ProductManager{
         }
     }
     updateProduct = async (id,updateProd) => {
-        this.getProducts()
+        await this.getProducts()
         try {
             let producto = this.products.find(prod => prod.id === id)
             if (!producto) return 'Not found'
@@ -86,7 +86,7 @@ class ProductManager{
 
     }
     deleteProduct = async (id) => {
-        this.getProducts()
+        await this.getProducts()
         try {
             const eliminarProd = this.products.filter(prod => prod.id !== id)
             if (JSON.stringify(eliminarProd) === JSON.stringify(this.products)) return 'Id no encontrado'
